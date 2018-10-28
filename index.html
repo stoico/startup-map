@@ -12,7 +12,7 @@
         <div id="central-pane">
             <div id="list-view">
                 <div class="list-item" v-for="location in locations" v-if="location.selectedByUser" v-on:click="listItemClick(location)">
-                        <img class="logo-co" :src="'https://logo.clearbit.com/' + location.title.toLowerCase() + '.com?size=70'" alt="" style="border-radius: 6px;"> {{ location.title }}
+                        <img class="logo-co" :src="'https://logo.clearbit.com/' + location.title + '.com?size=70'" alt="" style="border-radius: 6px;"> {{ location.title }}
                         <div class="desc" v-show="!location.descriptionIsHidden">{{ location.description }}</div>
                         <div class="desc jobs" v-show="location.jobs.length && !location.descriptionIsHidden">
                             <div v-for="job in location.jobs">
