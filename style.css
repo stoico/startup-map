@@ -29,9 +29,6 @@ body {
 #container {
     height: 100%;
     width: 100%;
-    /* display: flex;
-  justify-content: center;
-  align-items: center; */
 }
 
 #central-pane {
@@ -82,18 +79,10 @@ body {
     width: 100%;
     padding: 8% 10%;
     cursor: pointer;
-    /* border: 3px transparent solid; */
-}
-
-.list-item:hover > div {
-    /* color: #3e86e3; */
 }
 
 .list-item:hover {
-    /* border-top: 3px #3e86e3 solid;
-    border-bottom: 3px #3e86e3 solid; */
     background: rgba(22, 106, 231, 0.2) !important;
-    /* border-left: 2px #3e86e3 solid; */
 }
 .list-item img {
     margin-right: 8%;
@@ -146,7 +135,8 @@ select {
     background: none;
     margin-top: 0;
 }
-/* Retina  */
+
+/* Retina Screens  */
 @media all and (-webkit-min-device-pixel-ratio : 1.5),
 all and (-o-min-device-pixel-ratio: 3/2),
 all and (min--moz-device-pixel-ratio: 1.5),
