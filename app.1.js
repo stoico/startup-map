@@ -1,4 +1,4 @@
-// import { populateInfoWindow } from './util/mapBehaviour.js';
+// import { populateInfoWindow } from "./util/mapBehaviour.js";
 
 // Create a new blank array for all the listing markers.
 let markers = [];
@@ -246,23 +246,35 @@ var app = new Vue({
       } else {
         location.descriptionIsHidden = true;
       }
-      getJobListing();
+      getJobListing(location);
 
       function getJobListing(location) {
-        fetch("https://api.lever.co/v0/postings/lever")
-          .then(response => {
-            if (!response.ok) {
-              throw Error(response.statusText);
-            }
-            return response.json();
-          })
-          .then(data => {
-            // Work with JSON data here
-            console.log(data[0].text);
-          })
-          .catch(err => {
-            alert("Level API is not working. Try again later.");
-          });
+        if (!location.jobs.length) {
+          fetch(
+            "https://api.lever.co/v0/postings/" + location.title.toLowerCase()
+          )
+            .then(response => {
+              if (!response.ok) {
+                throw Error(response.statusText);
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log(typeof data);
+              console.log(data);
+              for (const companyData of data) {
+                console.log(companyData.text);
+                console.log(typeof companyData.text);
+                location.jobs.push(companyData.text);
+              }
+              // for (const companyData of data) {
+              // location.jobs.push(companyData.text);
+              // console.log(companyData);
+            })
+            .catch(err => {
+              console.log("Level API is not working. Try again later.");
+            });
+        }
       }
     },
 
@@ -310,19 +322,9 @@ var app = new Vue({
       this.createMarkers();
     },
 
-    initFoursquare: function() {
-      console.log("Run foursquare");
-      //    console.log(response);
-    },
-
     // Return error if the Google Maps API did not load
     mapsAPIError: function() {
       alert("Google Maps is not working. Try again later.");
-    },
-
-    // Return error if the Foursquare API did not load
-    foursquareAPIError: function() {
-      alert("Foursquare is not working. Try again later.");
     }
   } // /Methods
 });
