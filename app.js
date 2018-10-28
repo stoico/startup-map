@@ -17,7 +17,6 @@ var app = new Vue({
       "Any"
     ],
     selection: "",
-    // Normally we'd have these in a database instead.
     locations: [
       {
         title: "Bitfury",
