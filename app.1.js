@@ -10,7 +10,6 @@ var app = new Vue({
   el: "#container",
   // app initial state
   data: {
-    city: "NYC",
     options: [
       "Raised less than $20M",
       "Raised $20-$50M",
@@ -29,7 +28,10 @@ var app = new Vue({
         },
         fundingRaised: 25.0,
         domain: "wetransfer.com",
-        selectedByUser: true
+        selectedByUser: true,
+        description:
+          "WeTransfer offers a way to send files around the world through its platform.",
+        descriptionIsHidden: true
       },
       {
         title: "MessageBird",
@@ -39,7 +41,10 @@ var app = new Vue({
         },
         fundingRaised: 60.1,
         domain: "messagebird.com",
-        selectedByUser: true
+        selectedByUser: true,
+        description:
+          "MessageBird is a cloud communications platform that connects enterprises to their global customers",
+        descriptionIsHidden: true
       },
       {
         title: "Framer",
@@ -49,7 +54,10 @@ var app = new Vue({
         },
         fundingRaised: 9.3,
         domain: "framer.com",
-        selectedByUser: true
+        selectedByUser: true,
+        description:
+          "Framer is a tool to design interactive high-fidelity prototypes for iOS, Android, desktop, or the web.",
+        descriptionIsHidden: true
       },
       {
         title: "Adyen",
@@ -59,7 +67,10 @@ var app = new Vue({
         },
         fundingRaised: 266.0,
         domain: "ayden.com",
-        selectedByUser: true
+        selectedByUser: true,
+        description:
+          "Adyen is a multichannel payment company outsourcing payment services to international merchants.",
+        descriptionIsHidden: true
       },
       {
         title: "Etergo",
@@ -69,7 +80,10 @@ var app = new Vue({
         },
         fundingRaised: 6.1,
         domain: "etergo.com",
-        selectedByUser: true
+        selectedByUser: true,
+        description:
+          "Etergo is an automotive company that develops AppScooter, an electric smart vehicle for the future-ready industry.",
+        descriptionIsHidden: true
       },
       {
         title: "Impraise",
@@ -79,7 +93,10 @@ var app = new Vue({
         },
         fundingRaised: 13.6,
         domain: "impraise.com",
-        selectedByUser: true
+        selectedByUser: true,
+        description:
+          "Impraise is a web and mobile app for sharing actionable, timely feedback between colleagues.",
+        descriptionIsHidden: true
       },
       {
         title: "Bitfury",
@@ -89,7 +106,10 @@ var app = new Vue({
         },
         fundingRaised: 40.0,
         domain: "bitfury.com",
-        selectedByUser: true
+        selectedByUser: true,
+        description:
+          "Bitfury is the leading full service bitcoin and blockchain technology company.",
+        descriptionIsHidden: true
       },
       {
         title: "Treatwell",
@@ -99,7 +119,10 @@ var app = new Vue({
         },
         fundingRaised: 38.0,
         domain: "treatwell.com",
-        selectedByUser: true
+        selectedByUser: true,
+        description:
+          "Treatwell is Europe's leading marketplace for booking hair and beauty appointments online.",
+        descriptionIsHidden: true
       }
     ]
   },
@@ -184,6 +207,7 @@ var app = new Vue({
           });
         }
       }
+
       function toggleBounce() {
         _this = this;
         _this.setAnimation(google.maps.Animation.BOUNCE);
@@ -202,12 +226,29 @@ var app = new Vue({
       }
     },
 
-    makeMarkerBounce: function(locationTitle) {
-      console.log(`Passed ${locationTitle} eh`);
+    makeMarkerBounce: function(location) {
+      console.log(`Passed ${location.title} eh`);
       console.log(markers);
       for (const m of markers) {
-        if (m.title == locationTitle) google.maps.event.trigger(m, "click");
+        if (m.title == location.title) google.maps.event.trigger(m, "click");
       }
+      // this.showDesc(location);
+    },
+
+    showDesc: function(location) {
+      console.log("Entered showDesc function");
+      if (location.descriptionIsHidden) {
+        console.log("Is hidden");
+        location.descriptionIsHidden = false;
+      } else {
+        console.log("Not hidden");
+        location.descriptionIsHidden = true;
+      }
+    },
+
+    listItemClick: function(location) {
+      this.makeMarkerBounce(location);
+      this.showDesc(location);
     },
 
     // This function will loop through the markers array and display them all.

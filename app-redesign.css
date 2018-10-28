@@ -93,7 +93,7 @@ body {
     /* border-top: 3px #3e86e3 solid;
     border-bottom: 3px #3e86e3 solid; */
     background: rgba(22, 106, 231, 0.2) !important;
-    border-left: 2px #3e86e3 solid;
+    /* border-left: 2px #3e86e3 solid; */
 }
 .list-item img {
     margin-right: 8%;
@@ -122,6 +122,17 @@ select {
 
 .custom-font {
     font-family: 'Custom', Arial, sans-serif;
+}
+
+.desc {
+    font-family: Arial, Helvetica;
+    font-size: calc(10px + 0.4vw);
+    padding: 1.4vw;
+    line-height: calc(11px + 0.4vw);
+    color: #3E3E3E;
+    background: rgb(0,0,0,0.03);
+    border-radius: 10px;
+    margin-top: 1.4vw;
 }
 /* Retina  */
 @media all and (-webkit-min-device-pixel-ratio : 1.5),
