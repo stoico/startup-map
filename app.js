@@ -231,7 +231,8 @@ var app = new Vue({
       }
     },
 
-    showDesc: function(location) {
+    // Toggles the description's visibility of an item of the list
+    toggleDescription: function(location) {
       if (location.descriptionIsHidden) {
         location.descriptionIsHidden = false;
       } else {
@@ -239,6 +240,8 @@ var app = new Vue({
       }
     },
 
+    // Fetch data from the LeverAPI and if job listings are found
+    // they are fed into the app data to be displayed in the view
     getJobListing: function(location) {
       if (!location.jobs.length) {
         fetch(
@@ -265,10 +268,11 @@ var app = new Vue({
       }
     },
 
+    // What happens when the user click on one of the items in the list
     listItemClick: function(location) {
       this.makeMarkerBounce(location);
       this.getJobListing(location);
-      this.showDesc(location);
+      this.toggleDescription(location);
     },
 
     // This function will loop through the markers array and display them all.
@@ -289,6 +293,8 @@ var app = new Vue({
       }
     },
 
+    // Filters the results list, based on the user's selection
+    // via dropdown menu
     updateSelection: function() {
       selection = this.selection;
       options = this.options;
