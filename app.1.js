@@ -21,6 +21,20 @@ var app = new Vue({
     // Normally we'd have these in a database instead.
     locations: [
       {
+        title: "Bitfury",
+        location: {
+          lat: 52.374192,
+          lng: 4.886953
+        },
+        fundingRaised: 40.0,
+        domain: "bitfury.com",
+        selectedByUser: true,
+        description:
+          "Bitfury is the leading full service bitcoin and blockchain technology company.",
+        descriptionIsHidden: true,
+        jobs: []
+      },
+      {
         title: "WeTransfer",
         location: {
           lat: 52.333458,
@@ -31,7 +45,8 @@ var app = new Vue({
         selectedByUser: true,
         description:
           "WeTransfer offers a way to send files around the world through its platform.",
-        descriptionIsHidden: true
+        descriptionIsHidden: true,
+        jobs: []
       },
       {
         title: "MessageBird",
@@ -44,7 +59,8 @@ var app = new Vue({
         selectedByUser: true,
         description:
           "MessageBird is a cloud communications platform that connects enterprises to their global customers",
-        descriptionIsHidden: true
+        descriptionIsHidden: true,
+        jobs: []
       },
       {
         title: "Framer",
@@ -57,7 +73,8 @@ var app = new Vue({
         selectedByUser: true,
         description:
           "Framer is a tool to design interactive high-fidelity prototypes for iOS, Android, desktop, or the web.",
-        descriptionIsHidden: true
+        descriptionIsHidden: true,
+        jobs: []
       },
       {
         title: "Adyen",
@@ -70,7 +87,8 @@ var app = new Vue({
         selectedByUser: true,
         description:
           "Adyen is a multichannel payment company outsourcing payment services to international merchants.",
-        descriptionIsHidden: true
+        descriptionIsHidden: true,
+        jobs: []
       },
       {
         title: "Etergo",
@@ -83,7 +101,8 @@ var app = new Vue({
         selectedByUser: true,
         description:
           "Etergo is an automotive company that develops AppScooter, an electric smart vehicle for the future-ready industry.",
-        descriptionIsHidden: true
+        descriptionIsHidden: true,
+        jobs: []
       },
       {
         title: "Impraise",
@@ -96,20 +115,8 @@ var app = new Vue({
         selectedByUser: true,
         description:
           "Impraise is a web and mobile app for sharing actionable, timely feedback between colleagues.",
-        descriptionIsHidden: true
-      },
-      {
-        title: "Bitfury",
-        location: {
-          lat: 52.374192,
-          lng: 4.886953
-        },
-        fundingRaised: 40.0,
-        domain: "bitfury.com",
-        selectedByUser: true,
-        description:
-          "Bitfury is the leading full service bitcoin and blockchain technology company.",
-        descriptionIsHidden: true
+        descriptionIsHidden: true,
+        jobs: []
       },
       {
         title: "Treatwell",
@@ -122,7 +129,8 @@ var app = new Vue({
         selectedByUser: true,
         description:
           "Treatwell is Europe's leading marketplace for booking hair and beauty appointments online.",
-        descriptionIsHidden: true
+        descriptionIsHidden: true,
+        jobs: []
       }
     ]
   },
@@ -227,22 +235,34 @@ var app = new Vue({
     },
 
     makeMarkerBounce: function(location) {
-      console.log(`Passed ${location.title} eh`);
-      console.log(markers);
       for (const m of markers) {
         if (m.title == location.title) google.maps.event.trigger(m, "click");
       }
-      // this.showDesc(location);
     },
 
     showDesc: function(location) {
-      console.log("Entered showDesc function");
       if (location.descriptionIsHidden) {
-        console.log("Is hidden");
         location.descriptionIsHidden = false;
       } else {
-        console.log("Not hidden");
         location.descriptionIsHidden = true;
+      }
+      getJobListing();
+
+      function getJobListing(location) {
+        fetch("https://api.lever.co/v0/postings/lever")
+          .then(response => {
+            if (!response.ok) {
+              throw Error(response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+            // Work with JSON data here
+            console.log(data[0].text);
+          })
+          .catch(err => {
+            alert("Level API is not working. Try again later.");
+          });
       }
     },
 
