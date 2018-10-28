@@ -17,7 +17,6 @@ var app = new Vue({
       "Any"
     ],
     selection: "",
-    // These are the real estate listings that will be shown to the user.
     // Normally we'd have these in a database instead.
     locations: [
       {
@@ -153,17 +152,17 @@ var app = new Vue({
       setMapOnAll(null);
       markers.length = 0; // empty array of markers
       largeInfowindow = new google.maps.InfoWindow();
-      var _this = this;
+      let _this = this;
       locations = this.locations;
 
       // The following group uses the location array to create an array of markers on initialize.
-      for (var i = 0; i < locations.length; i++) {
+      for (let i = 0; i < locations.length; i++) {
         if (locations[i].selectedByUser) {
           // Get the position from the location array.
-          var position = locations[i].location;
-          var title = locations[i].title;
+          let position = locations[i].location;
+          let title = locations[i].title;
           // Create a marker per location, and put into markers array.
-          var marker = new google.maps.Marker({
+          let marker = new google.maps.Marker({
             position: position,
             title: title,
             animation: google.maps.Animation.DROP,
@@ -213,14 +212,14 @@ var app = new Vue({
         _this.setAnimation(google.maps.Animation.BOUNCE);
         setInterval(function() {
           _this.setAnimation(null);
-        }, 3400);
+        }, 1400);
         // TO FIX. Use promises to fix the fact that if you click on a new location
         // while the previous marker is still bouncing, that marker will bounce forever
       }
 
       // Sets the map on all markers in the array.
       function setMapOnAll(map) {
-        for (var i = 0; i < markers.length; i++) {
+        for (let i = 0; i < markers.length; i++) {
           markers[i].setMap(map);
         }
       }
@@ -238,45 +237,45 @@ var app = new Vue({
       } else {
         location.descriptionIsHidden = true;
       }
-      getJobListing(location);
+    },
 
-      function getJobListing(location) {
-        if (!location.jobs.length) {
-          fetch(
-            "https://api.lever.co/v0/postings/" + location.title.toLowerCase()
-          )
-            .then(response => {
-              if (!response.ok) {
-                throw Error(response.statusText);
-              }
-              return response.json();
-            })
-            .then(data => {
-              console.log(typeof data);
-              console.log(data);
-              for (const companyData of data) {
-                console.log(companyData.text);
-                console.log(typeof companyData.text);
-                location.jobs.push(companyData.text);
-              }
-            })
-            .catch(err => {
-              console.log("Level API is not working. Try again later.");
-            });
-        }
+    getJobListing: function(location) {
+      if (!location.jobs.length) {
+        fetch(
+          "https://api.lever.co/v0/postings/" + location.title.toLowerCase()
+        )
+          .then(response => {
+            if (!response.ok) {
+              throw Error(response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(typeof data);
+            console.log(data);
+            for (const companyData of data) {
+              console.log(companyData.text);
+              console.log(typeof companyData.text);
+              location.jobs.push(companyData.text);
+            }
+          })
+          .catch(err => {
+            console.log("Level API is not working. Try again later.");
+          });
       }
     },
 
     listItemClick: function(location) {
       this.makeMarkerBounce(location);
+      this.getJobListing(location);
       this.showDesc(location);
     },
 
     // This function will loop through the markers array and display them all.
     showListings: function() {
-      var bounds = new google.maps.LatLngBounds();
+      let bounds = new google.maps.LatLngBounds();
       // Extend the boundaries of the map for each marker and display the marker
-      for (var i = 0; i < markers.length; i++) {
+      for (let i = 0; i < markers.length; i++) {
         markers[i].setMap(map);
         bounds.extend(markers[i].position);
       }
@@ -285,7 +284,7 @@ var app = new Vue({
 
     // This function will loop through the listings and hide them all.
     hideListings: function() {
-      for (var i = 0; i < markers.length; i++) {
+      for (let i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
       }
     },
