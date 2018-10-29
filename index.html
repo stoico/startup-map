@@ -12,19 +12,19 @@
         <div id="central-pane">
             <div id="list-view">
                 <div data-bind="foreach: locations">
-                    <div class="list-item" data-bind="if: selectedByUser" data-bind="click: listItemClick($data)">
+                    <div class="list-item" data-bind="if: selectedByUser, click: $parent.listItemClick">
                         <img class="logo-co" data-bind="attr:{src: 'https://logo.clearbit.com/' +  title + '.com?size=70'}" style="border-radius: 6px;"> <span data-bind="text: title"></span>
-                        <div class="desc" data-bind="visible: !descriptionIsHidden">
+                        <div class="desc" data-bind="visible: !descriptionIsHidden()">
                             <div data-bind="text: description"></div>
                         </div>
-                        <div class="desc jobs" data-bind="visible: jobs.length && !descriptionIsHidden()">
-                            <div v-for="job in location.jobs">
+                        <div class="desc jobs" data-bind="visible: jobs().length && !descriptionIsHidden()">
                                 <ul>
-                                    <li>{{ job }}</li>
+                                    <!-- ko foreach: jobs -->
+                                    <li data-bind="text: $data"></li>
+                                    <!-- /ko -->
                                 </ul>
-                            </div>
                         </div>
-                        <div class="desc nojobs" data-bind="visible: jobs.length == 0 && !descriptionIsHidden()">
+                        <div class="desc nojobs" data-bind="visible: jobs().length == 0 && !descriptionIsHidden()">
                             No job listing available via LeverAPI for this company.
                         </div>
                     </div>
@@ -35,18 +35,13 @@
             </div>
         </div>
         <div id="centre">
-            <select v-model="selection" v-on:change="updateSelection">
-                <!-- ko foreach: options -->
-                <option data-bind="text: $data" v-bind:value="option">
-                </option>
-                <!-- /ko -->
+            <select data-bind="options: options" v-model="selection" v-on:change="updateSelection">
             </select>
         </div>
     </div>
-    <div data-bind="text: testing"></div>
 
     <script src="app.js"></script>
-    <script type="application/json" id="data" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbPtfUYSFaelDIZQB1GeAHqbOrYltGF8A&v=3&callback=initMap" onerror="mapsAPIError()"></script>
+    <script type="application/json" id="data" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbPtfUYSFaelDIZQB1GeAHqbOrYltGF8A&v=3&callback=app.initMap()" onerror="app.mapsAPIError()"></script>
 
 </body>
 
