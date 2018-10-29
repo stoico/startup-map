@@ -191,7 +191,7 @@ let app = {
         loc.selectedByUser(true);
       }
     }
-    app.createMarkers();
+    createMarkers();
   }
 };
 
@@ -215,7 +215,7 @@ app.selection.subscribe(function(newSelectionValue) {
       loc.selectedByUser(true);
     }
   }
-  app.createMarkers();
+  createMarkers();
 });
 
 function initMap() {
