@@ -4,7 +4,6 @@
 <head>
     <link rel="stylesheet" href="style.css">
     <title>Startups Location - Amsterdam</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 </head>
 
 <body>
@@ -12,7 +11,8 @@
         <div id="central-pane">
             <div id="list-view">
                 <div data-bind="foreach: locations">
-                    <div class="list-item" data-bind="if: selectedByUser, click: $parent.listItemClick">
+                    <!-- ko if: selectedByUser -->
+                    <div class="list-item" data-bind="click: $parent.listItemClick">
                         <img class="logo-co" data-bind="attr:{src: 'https://logo.clearbit.com/' +  title + '.com?size=70'}" style="border-radius: 6px;"> <span data-bind="text: title"></span>
                         <div class="desc" data-bind="visible: !descriptionIsHidden()">
                             <div data-bind="text: description"></div>
@@ -23,11 +23,15 @@
                                     <li data-bind="text: $data"></li>
                                     <!-- /ko -->
                                 </ul>
+                                <p>
+                                    powered by Lever API
+                                </p>
                         </div>
                         <div class="desc nojobs" data-bind="visible: jobs().length == 0 && !descriptionIsHidden()">
                             No job listing available via LeverAPI for this company.
                         </div>
                     </div>
+                    <!-- /ko -->
                 </div>
             </div>
             <div id="map-container">
@@ -35,13 +39,14 @@
             </div>
         </div>
         <div id="centre">
-            <select data-bind="options: options" v-model="selection" v-on:change="updateSelection">
+            <select data-bind="options: options, optionsCaption: '', value: selection">
             </select>
         </div>
     </div>
 
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbPtfUYSFaelDIZQB1GeAHqbOrYltGF8A&v=3&callback=initMap" onerror="mapsAPIError()"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <script src="app.js"></script>
-    <script type="application/json" id="data" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbPtfUYSFaelDIZQB1GeAHqbOrYltGF8A&v=3&callback=app.initMap()" onerror="app.mapsAPIError()"></script>
 
 </body>
 

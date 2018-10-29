@@ -2,15 +2,14 @@
 
 // Create a new blank array for all the listing markers.
 let markers = [];
-let map;
+var map;
 let largeInfowindow;
 
 let app = {
   options: [
     "Raised less than $20M",
     "Raised $20-$50M",
-    "Raised more than $50M",
-    "Any"
+    "Raised more than $50M"
   ],
   selection: ko.observable(""),
   locations: [
@@ -52,7 +51,7 @@ let app = {
       domain: "messagebird.com",
       selectedByUser: ko.observable(true),
       description:
-        "MessageBird is a cloud communications platform that connects enterprises to their global customers",
+        "MessageBird is a cloud communications platform that connects enterprises to their global customers.",
       descriptionIsHidden: ko.observable(true),
       jobs: ko.observableArray()
     },
@@ -127,20 +126,9 @@ let app = {
       jobs: ko.observableArray()
     }
   ],
-  initMap: function() {
-    // Constructor creates a new map - only center and zoom are required.
-    map = new google.maps.Map(document.getElementById("map"), {
-      center: {
-        lat: 52.37077,
-        lng: 4.900014
-      },
-      zoom: 13,
-      mapTypeControl: false
-    });
-    app.createMarkers();
-  },
 
   createMarkers: function() {
+    console.log("createMarkers called!");
     setMapOnAll(null);
     markers.length = 0; // empty array of markers
     largeInfowindow = new google.maps.InfoWindow();
@@ -189,7 +177,6 @@ let app = {
 
               }
           }>${marker.title}</div>`);
-        // ^^ FIX The logos. Ayden is either stretched or to tall enough
         infowindow.open(map, marker);
         // Make sure the marker property is cleared if the infowindow is closed.
         infowindow.addListener("closeclick", function() {
@@ -205,8 +192,6 @@ let app = {
       setInterval(function() {
         _this.setAnimation(null);
       }, 1400);
-      // TO FIX. Use promises to fix the fact that if you click on a new location
-      // while the previous marker is still bouncing, that marker will bounce forever
     }
 
     // Sets the map on all markers in the array.
@@ -289,9 +274,15 @@ let app = {
   // via dropdown menu
   updateSelection: function() {
     selection = app.selection();
+    console.log("selection");
+    console.log(app.selection());
     options = app.options;
+    console.log("options");
+    console.log(app.options);
     for (const loc of app.locations) {
+      console.log("loc inside of locations", loc);
       if (selection == options[0]) {
+        console.log("The first option has been selected");
         if (loc.fundingRaised < 20) loc.selectedByUser(true);
         else loc.selectedByUser(false);
       } else if (selection == options[1]) {
@@ -305,13 +296,54 @@ let app = {
         loc.selectedByUser(true);
       }
     }
-    this.createMarkers();
-  },
-
-  // Return error if the Google Maps API did not load
-  mapsAPIError: function() {
-    alert("Google Maps is not working. Try again later.");
+    app.createMarkers();
   }
 };
 
 ko.applyBindings(app);
+
+app.selection.subscribe(function(newSelectionValue) {
+  selection = newSelectionValue;
+  console.log("selection");
+  console.log(app.selection());
+  options = app.options;
+  console.log("options");
+  console.log(app.options);
+  for (const loc of app.locations) {
+    console.log("loc inside of locations", loc);
+    if (selection == options[0]) {
+      console.log("The first option has been selected");
+      if (loc.fundingRaised < 20) loc.selectedByUser(true);
+      else loc.selectedByUser(false);
+    } else if (selection == options[1]) {
+      if (loc.fundingRaised > 20 && loc.fundingRaised < 50)
+        loc.selectedByUser(true);
+      else loc.selectedByUser(false);
+    } else if (selection == options[2]) {
+      if (loc.fundingRaised > 50) loc.selectedByUser(true);
+      else loc.selectedByUser(false);
+    } else {
+      loc.selectedByUser(true);
+    }
+  }
+  app.createMarkers();
+});
+
+function initMap() {
+  console.log("initMap called");
+  // Constructor creates a new map - only center and zoom are required.
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: {
+      lat: 52.37077,
+      lng: 4.900014
+    },
+    zoom: 13,
+    mapTypeControl: false
+  });
+  app.createMarkers();
+}
+
+// Return error if the Google Maps API did not load
+function mapsAPIError() {
+  alert("Google Maps is not working. Try again later.");
+}

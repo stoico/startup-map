@@ -103,7 +103,7 @@ body {
 }
 
 select {
-    width: 210px;
+    width: 270px;
     height: 42px;
     border-radius: 10px;
     font-size: 1.2vw;
@@ -128,6 +128,11 @@ select {
     background: none;
     margin-top: 0;
 
+}
+
+.jobs p {
+    float:right;
+    font-size: 8px;
 }
 
 .nojobs {
