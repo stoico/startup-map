@@ -127,14 +127,18 @@ let app = {
     }
   ],
 
-  makeMarkerBounce: function(location) {
+  itemClick: function(location) {
+    let self = this;
     for (const m of markers) {
-      if (m.title == location.title) google.maps.event.trigger(m, "click");
+      if (m.title == location.title) {
+        google.maps.event.trigger(m, "click");
+      }
     }
   },
 
   // Toggles the description's visibility of an item of the list
   toggleDescription: function(location) {
+    app.getJobPosting(location);
     if (location.descriptionIsHidden() == true) {
       location.descriptionIsHidden(false);
     } else {
@@ -149,6 +153,7 @@ let app = {
       fetch("https://api.lever.co/v0/postings/" + location.title.toLowerCase())
         .then(response => {
           if (!response.ok) {
+            console.log(response.status);
           } else {
             return response.json();
           }
@@ -159,16 +164,10 @@ let app = {
           }
         })
         .catch(err => {
+          alert("Lever API is not working. Try again later.");
           console.log("Fetch Error:", err);
         });
     }
-  },
-
-  // What happens when the user click on one of the items in the list
-  listItemClick: function(location) {
-    app.makeMarkerBounce(location);
-    app.getJobPosting(location);
-    app.toggleDescription(location);
   },
 
   // Filters the results list, based on the user's selection
@@ -261,6 +260,9 @@ function createMarkers() {
         populateInfoWindow(this, largeInfowindow);
       });
       marker.addListener("click", toggleBounce);
+      marker.addListener("click", function() {
+        app.toggleDescription(locations[i]);
+      });
     }
   }
   showListings();

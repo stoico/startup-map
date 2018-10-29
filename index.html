@@ -13,7 +13,7 @@
             <div id="list-view">
                 <div data-bind="foreach: locations">
                     <!-- ko if: selectedByUser -->
-                    <div class="list-item" data-bind="click: $parent.listItemClick">
+                    <div class="list-item" data-bind="click: $parent.itemClick">
                         <img class="logo-co" data-bind="attr:{src: 'https://logo.clearbit.com/' +  title + '.com?size=70'}" style="border-radius: 6px;"> <span data-bind="text: title"></span>
                         <div class="desc" data-bind="visible: !descriptionIsHidden()">
                             <div data-bind="text: description"></div>
