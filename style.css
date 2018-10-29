@@ -150,3 +150,10 @@ all and (min-device-pixel-ratio: 1.5) {
         background: #3e86e3 url("./static/bg@2x.png") repeat;
         background-size: 186px 171px;
     }
+}
+
+/* Smaller screens */
+@media only screen and (max-width: 700px) {
+    .list-item img {
+        display: none;
+    }
