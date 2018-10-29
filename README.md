@@ -1,4 +1,4 @@
-# <center> Startups Locator - App </center>
+# Startups Locator - App
 
 ![alt text](static/ui-screen.png)
 

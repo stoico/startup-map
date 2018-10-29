@@ -1,8 +1,6 @@
 *,
 *:before,
 *:after {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -113,21 +111,24 @@ select {
     font-family: 'Custom', Arial, sans-serif;
 }
 
+.list-item:hover .desc {
+    background: #cddaf1;
+}
+
 .desc {
     font-family: Arial, Helvetica;
     font-size: calc(10px + 0.4vw);
     padding: 1.4vw;
     line-height: calc(11px + 0.4vw);
     color: #3E3E3E;
-    background: rgb(0,0,0,0.03);
+    background: #f7f7f7;
     border-radius: 10px;
     margin-top: 1.4vw;
 }
 
 .jobs {
-    background: none;
+    background: none !important;
     margin-top: 0;
-
 }
 
 .jobs p {
@@ -157,3 +158,4 @@ all and (min-device-pixel-ratio: 1.5) {
     .list-item img {
         display: none;
     }
+}
