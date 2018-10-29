@@ -2,7 +2,7 @@
 
 // Create a new blank array for all the listing markers.
 let markers = [];
-var map;
+let map;
 let largeInfowindow;
 
 let app = {
@@ -127,81 +127,6 @@ let app = {
     }
   ],
 
-  createMarkers: function() {
-    console.log("createMarkers called!");
-    setMapOnAll(null);
-    markers.length = 0; // empty array of markers
-    largeInfowindow = new google.maps.InfoWindow();
-    let _this = this;
-    locations = this.locations;
-
-    // The following group uses the location array to create an array of markers on initialize.
-    for (let i = 0; i < locations.length; i++) {
-      if (locations[i].selectedByUser()) {
-        // Get the position from the location array.
-        let position = locations[i].location;
-        let title = locations[i].title;
-        // Create a marker per location, and put into markers array.
-        let marker = new google.maps.Marker({
-          position: position,
-          title: title,
-          animation: google.maps.Animation.DROP,
-          id: i,
-          icon: "./static/simple-icon-border.png",
-          size: new google.maps.Size(27, 41),
-          scaledSize: new google.maps.Size(27, 41)
-        });
-        // Push the marker to our array of markers.
-        markers.push(marker);
-        // Create an onclick event to open an infowindow at each marker.
-        marker.addListener("click", function() {
-          populateInfoWindow(this, largeInfowindow);
-        });
-        marker.addListener("click", toggleBounce);
-      }
-    }
-    this.showListings();
-
-    // This function populates the infowindow when the marker is clicked. We'll only allow
-    // one infowindow which will open at the marker that is clicked, and populate based
-    // on that markers position.
-    function populateInfoWindow(marker, infowindow) {
-      // Check to make sure the infowindow is not already opened on this marker.
-      if (infowindow.marker != marker) {
-        infowindow.marker = marker;
-        infowindow.setContent(`<div style="min-width: 120px; vertical-align: middle;">
-            <img src="https://logo.clearbit.com/${
-              marker.title
-            }.com?size=50" style="border-radius: 6px; vertical-align: middle; text-align: center; margin: 8px; hight: 50px; object-fit: cover;" class="custom-font" {
-              constructor() {
-
-              }
-          }>${marker.title}</div>`);
-        infowindow.open(map, marker);
-        // Make sure the marker property is cleared if the infowindow is closed.
-        infowindow.addListener("closeclick", function() {
-          console.log(this);
-          infowindow.marker = null;
-        });
-      }
-    }
-
-    function toggleBounce() {
-      _this = this;
-      _this.setAnimation(google.maps.Animation.BOUNCE);
-      setInterval(function() {
-        _this.setAnimation(null);
-      }, 1400);
-    }
-
-    // Sets the map on all markers in the array.
-    function setMapOnAll(map) {
-      for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-      }
-    }
-  },
-
   makeMarkerBounce: function(location) {
     for (const m of markers) {
       if (m.title == location.title) google.maps.event.trigger(m, "click");
@@ -229,14 +154,8 @@ let app = {
           return response.json();
         })
         .then(data => {
-          console.log(data);
-          console.log(typeof data);
-
           for (const companyData of data) {
-            console.log(companyData.text);
-            console.log(typeof companyData);
             location.jobs.push(companyData.text);
-            console.log(location.jobs());
           }
         })
         .catch(err => {
@@ -252,37 +171,13 @@ let app = {
     app.toggleDescription(location);
   },
 
-  // This function will loop through the markers array and display them all.
-  showListings: function() {
-    let bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    for (let i = 0; i < markers.length; i++) {
-      markers[i].setMap(map);
-      bounds.extend(markers[i].position);
-    }
-    map.fitBounds(bounds);
-  },
-
-  // This function will loop through the listings and hide them all.
-  hideListings: function() {
-    for (let i = 0; i < markers.length; i++) {
-      markers[i].setMap(null);
-    }
-  },
-
   // Filters the results list, based on the user's selection
   // via dropdown menu
   updateSelection: function() {
     selection = app.selection();
-    console.log("selection");
-    console.log(app.selection());
     options = app.options;
-    console.log("options");
-    console.log(app.options);
     for (const loc of app.locations) {
-      console.log("loc inside of locations", loc);
       if (selection == options[0]) {
-        console.log("The first option has been selected");
         if (loc.fundingRaised < 20) loc.selectedByUser(true);
         else loc.selectedByUser(false);
       } else if (selection == options[1]) {
@@ -304,15 +199,9 @@ ko.applyBindings(app);
 
 app.selection.subscribe(function(newSelectionValue) {
   selection = newSelectionValue;
-  console.log("selection");
-  console.log(app.selection());
   options = app.options;
-  console.log("options");
-  console.log(app.options);
   for (const loc of app.locations) {
-    console.log("loc inside of locations", loc);
     if (selection == options[0]) {
-      console.log("The first option has been selected");
       if (loc.fundingRaised < 20) loc.selectedByUser(true);
       else loc.selectedByUser(false);
     } else if (selection == options[1]) {
@@ -330,7 +219,6 @@ app.selection.subscribe(function(newSelectionValue) {
 });
 
 function initMap() {
-  console.log("initMap called");
   // Constructor creates a new map - only center and zoom are required.
   map = new google.maps.Map(document.getElementById("map"), {
     center: {
@@ -340,7 +228,91 @@ function initMap() {
     zoom: 13,
     mapTypeControl: false
   });
-  app.createMarkers();
+  createMarkers();
+}
+
+function createMarkers() {
+  setMapOnAll(null);
+  markers.length = 0; // empty array of markers
+  largeInfowindow = new google.maps.InfoWindow();
+  let _this = this;
+  locations = app.locations;
+
+  // The following group uses the location array to create an array of markers on initialize.
+  for (let i = 0; i < locations.length; i++) {
+    if (locations[i].selectedByUser()) {
+      // Get the position from the location array.
+      let position = locations[i].location;
+      let title = locations[i].title;
+      // Create a marker per location, and put into markers array.
+      let marker = new google.maps.Marker({
+        position: position,
+        title: title,
+        animation: google.maps.Animation.DROP,
+        id: i,
+        icon: "./static/simple-icon-border.png",
+        size: new google.maps.Size(27, 41),
+        scaledSize: new google.maps.Size(27, 41)
+      });
+      // Push the marker to our array of markers.
+      markers.push(marker);
+      // Create an onclick event to open an infowindow at each marker.
+      marker.addListener("click", function() {
+        populateInfoWindow(this, largeInfowindow);
+      });
+      marker.addListener("click", toggleBounce);
+    }
+  }
+  showListings();
+
+  // This function populates the infowindow when the marker is clicked. We'll only allow
+  // one infowindow which will open at the marker that is clicked, and populate based
+  // on that markers position.
+  function populateInfoWindow(marker, infowindow) {
+    // Check to make sure the infowindow is not already opened on this marker.
+    if (infowindow.marker != marker) {
+      infowindow.marker = marker;
+      infowindow.setContent(`<div style="min-width: 120px; vertical-align: middle;">
+          <img src="https://logo.clearbit.com/${
+            marker.title
+          }.com?size=50" style="border-radius: 6px; vertical-align: middle; text-align: center; margin: 8px; hight: 50px; object-fit: cover;" class="custom-font" {
+            constructor() {
+
+            }
+        }>${marker.title}</div>`);
+      infowindow.open(map, marker);
+      // Make sure the marker property is cleared if the infowindow is closed.
+      infowindow.addListener("closeclick", function() {
+        infowindow.marker = null;
+      });
+    }
+  }
+
+  function toggleBounce() {
+    _this = this;
+    _this.setAnimation(google.maps.Animation.BOUNCE);
+    setInterval(function() {
+      _this.setAnimation(null);
+    }, 1400);
+  }
+
+  // Sets the map on all markers in the array.
+  function setMapOnAll(map) {
+    for (let i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+    }
+  }
+}
+
+// This function will loop through the markers array and display them all.
+function showListings() {
+  let bounds = new google.maps.LatLngBounds();
+  // Extend the boundaries of the map for each marker and display the marker
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+    bounds.extend(markers[i].position);
+  }
+  map.fitBounds(bounds);
 }
 
 // Return error if the Google Maps API did not load
