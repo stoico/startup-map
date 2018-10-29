@@ -1,4 +1,4 @@
-// import { populateInfoWindow } from "./util/mapBehaviour.js";
+// "use strict";
 
 // Create a new blank array for all the listing markers.
 let markers = [];
@@ -149,7 +149,7 @@ let app = {
   // Fetch data from the LeverAPI and  job postings are found
   // they are fed into the app data to be displayed in the view
   getJobPosting: function(location) {
-    if (!location.jobs().length && location === locations[0]) {
+    if (!location.jobs().length && location === this.locations[0]) {
       fetch("https://api.lever.co/v0/postings/" + location.title.toLowerCase())
         .then(response => {
           if (!response.ok) {
@@ -235,7 +235,7 @@ function createMarkers() {
   markers.length = 0; // empty array of markers
   largeInfowindow = new google.maps.InfoWindow();
   let _this = this;
-  locations = app.locations;
+  let locations = app.locations;
 
   // The following group uses the location array to create an array of markers on initialize.
   for (let i = 0; i < locations.length; i++) {

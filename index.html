@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
     <title>Startup Locations - Amsterdam</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,7 @@
                 <div data-bind="foreach: locations">
                     <!-- ko if: selectedByUser -->
                     <div class="list-item" data-bind="click: $parent.itemClick">
-                        <img class="logo-co" data-bind="attr:{src: 'https://logo.clearbit.com/' +  title + '.com?size=70'}" style="border-radius: 6px;"> <span data-bind="text: title"></span>
+                        <img class="logo-co" src="#" data-bind="attr:{src: 'https://logo.clearbit.com/' +  title + '.com?size=70'}" alt="Startup logo" style="border-radius: 6px;"> <span data-bind="text: title"></span>
                         <div class="desc" data-bind="visible: !descriptionIsHidden()">
                             <div data-bind="text: description"></div>
                         </div>
