@@ -8,7 +8,8 @@ An MVVM pattern is implemented (through ES6 and Knockout.js) to create a reactiv
 
 ### See for yourself
 
-Open `index.html` to try out the app.
+Clone this repo with `git clone`.
+Run app by opening `index.html` to try out the app.
 
 ### Demo
 

@@ -169,29 +169,6 @@ let app = {
         });
     }
   },
-
-  // Filters the results list, based on the user's selection
-  // via dropdown menu
-  updateSelection: function() {
-    let selection = app.selection();
-    let options = app.options;
-    for (const loc of app.locations) {
-      if (selection == options[0]) {
-        if (loc.fundingRaised < 20) loc.selectedByUser(true);
-        else loc.selectedByUser(false);
-      } else if (selection == options[1]) {
-        if (loc.fundingRaised > 20 && loc.fundingRaised < 50)
-          loc.selectedByUser(true);
-        else loc.selectedByUser(false);
-      } else if (selection == options[2]) {
-        if (loc.fundingRaised > 50) loc.selectedByUser(true);
-        else loc.selectedByUser(false);
-      } else {
-        loc.selectedByUser(true);
-      }
-    }
-    createMarkers();
-  }
 };
 
 ko.applyBindings(app);
@@ -293,7 +270,7 @@ function createMarkers() {
   function toggleBounce() {
     _this = this;
     _this.setAnimation(google.maps.Animation.BOUNCE);
-    setInterval(function() {
+    setTimeout(function() {
       _this.setAnimation(null);
     }, 1400);
   }
