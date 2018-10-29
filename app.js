@@ -1,4 +1,4 @@
-// "use strict";
+"use strict";
 
 // Create a new blank array for all the listing markers.
 let markers = [];
