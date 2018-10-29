@@ -145,13 +145,13 @@ let app = {
   // Fetch data from the LeverAPI and  job postings are found
   // they are fed into the app data to be displayed in the view
   getJobPosting: function(location) {
-    if (!location.jobs().length) {
+    if (!location.jobs().length && location === locations[0]) {
       fetch("https://api.lever.co/v0/postings/" + location.title.toLowerCase())
         .then(response => {
           if (!response.ok) {
-            throw Error(response.statusText);
+          } else {
+            return response.json();
           }
-          return response.json();
         })
         .then(data => {
           for (const companyData of data) {
@@ -159,7 +159,7 @@ let app = {
           }
         })
         .catch(err => {
-          console.log("Level API is not working. Try again later.");
+          console.log("Fetch Error:", err);
         });
     }
   },
