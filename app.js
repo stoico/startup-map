@@ -173,8 +173,8 @@ let app = {
   // Filters the results list, based on the user's selection
   // via dropdown menu
   updateSelection: function() {
-    selection = app.selection();
-    options = app.options;
+    let selection = app.selection();
+    let options = app.options;
     for (const loc of app.locations) {
       if (selection == options[0]) {
         if (loc.fundingRaised < 20) loc.selectedByUser(true);
@@ -197,8 +197,8 @@ let app = {
 ko.applyBindings(app);
 
 app.selection.subscribe(function(newSelectionValue) {
-  selection = newSelectionValue;
-  options = app.options;
+  let selection = newSelectionValue;
+  let options = app.options;
   for (const loc of app.locations) {
     if (selection == options[0]) {
       if (loc.fundingRaised < 20) loc.selectedByUser(true);
