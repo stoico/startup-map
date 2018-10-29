@@ -111,23 +111,19 @@ select {
     font-family: 'Custom', Arial, sans-serif;
 }
 
-.list-item:hover .desc {
-    background: #cddaf1;
-}
-
 .desc {
     font-family: Arial, Helvetica;
     font-size: calc(10px + 0.4vw);
     padding: 1.4vw;
     line-height: calc(11px + 0.4vw);
     color: #3E3E3E;
-    background: #f7f7f7;
+    background: rgba(0, 0, 0, 0.03);
     border-radius: 10px;
     margin-top: 1.4vw;
 }
 
 .jobs {
-    background: none !important;
+    background: none;
     margin-top: 0;
 }
 
