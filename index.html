@@ -8,9 +8,9 @@
 </head>
 
 <body>
-    <div id="container">
-        <div id="central-pane">
-            <div id="list-view">
+    <div id="container" class="container">
+        <div class="central-pane">
+            <div class="list-view">
                 <div data-bind="foreach: locations">
                     <!-- ko if: selectedByUser -->
                     <div class="list-item" data-bind="click: $parent.itemClick">
@@ -35,11 +35,11 @@
                     <!-- /ko -->
                 </div>
             </div>
-            <div id="map-container">
-                <div id="map"></div>
+            <div class="map-container">
+                <div id="map" class="map"></div>
             </div>
         </div>
-        <div id="centre">
+        <div class="centre">
             <select data-bind="options: options, optionsCaption: '', value: selection">
             </select>
         </div>
